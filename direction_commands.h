@@ -10,8 +10,8 @@ SOFTWARE.
 
 //=====[#include guards - begin]===============================================
 
-#ifndef _STEPPER_H_
-#define _STEPPER_H_
+#ifndef _DIRECTION_COMMANDS_H_
+#define _DIRECTION_COMMANDS_H_
 
 //=====[Declaration of public defines]=========================================
 
@@ -19,11 +19,8 @@ SOFTWARE.
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void initStepperControl();
-void updateStepperControl();
-
-void stepperRotationsWrite(int rotations);
-bool stepperReady();
+void initDirectionCommands();
+void updateDirectionCommands();
 
 //=====[#include guards - end]=================================================
 

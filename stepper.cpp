@@ -1,3 +1,13 @@
+/*
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 //=====[Libraries]=============================================================
 
 #include "stepper.h"
@@ -38,7 +48,7 @@ void updatePulseDir();
 
 //=====[Implementations of public functions]===================================
 
-void stepperControlInit()
+void initStepperControl()
 {
 
 
@@ -51,7 +61,7 @@ void stepperControlInit()
     delay(STARTUP_TIME); //fix this later
 }
 
-void stepperControlUpdate(){
+void updateStepperControl(){
     pulseDelayTimeIncrement = pulseDelayTimeIncrement + SYSTEM_TIME_INCREMENT_US;
     stepperUpdateStep();
     updatePulseDir();

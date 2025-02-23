@@ -10,14 +10,9 @@ SOFTWARE.
 
 //=====[Libraries]=============================================================
 
-
-#include "button.h"
-#include "clutch_driver_system.h"
-#include "direction_commands.h"
-#include "engaged_light.h"
-#include "stepper.h"
 #include <Arduino.h>
-
+#include "button.h"
+#include "direction_commands.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -29,34 +24,39 @@ SOFTWARE.
 
 //=====[Declaration and initialization of public global variables]=============
 
+
 //=====[Declaration and initialization of private global variables]============
 
 //=====[Declarations (prototypes) of private functions]========================
 
+void commandsOnEngage();
+void commandsOnDisengage();
+
 //=====[Implementations of public functions]===================================
 
-void initClutchDriverSystem(){
-    initButton();
-    initEngagedLight();
-    initDirectionCommands();
-
-    //this funtion has a delay so the stepper can have time to enable on boot.
-    initStepperControl(); 
-
-    //start system with one rotation (testing purposes)
-    stepperRotationsWrite(1);
+void initDirectionCommands() {
+    Serial.begin(9600);
 }
-void updateClutchDriverSystem(){
 
-  //main  control systems
-  updateStepperControl();
-  updateButton();
 
-  //run these commands after button and stepper are updated
-  updateDirectionCommands();
-  updateEngagedLight();
+void updateDirectionCommands() {
+    if ( buttonFalling() ) {
+        commandsOnEngage();
+    }
 
-  delayMicroseconds(SYSTEM_TIME_INCREMENT_US);
+    if ( buttonRising() ) {
+        commandsOnDisengage();
+    }
 }
+
 
 //=====[Implementations of private functions]==================================
+
+
+void commandsOnEngage() {
+    Serial.println("engaged");
+}
+
+void commandsOnDisengage() {
+    Serial.println("disengaged");
+}
