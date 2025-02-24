@@ -54,7 +54,8 @@ void updateDirectionCommands() {
 
 
 void commandsOnEngage() {
-    Serial.println("engaged");
+    Serial.println("engaged");`
+    turnOnEngagedLight();
 }
 
 void commandsOnDisengage() {

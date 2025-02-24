@@ -18,7 +18,7 @@ SOFTWARE.
 
 #define ENABLE_WT_TIME 200  //us
 #define DIR_FLIP_WT_TIME 10 //us 
-#define STARTUP_TIME 200    //s
+#define STARTUP_TIME 200    //ms
 #define PERIOD 170          //us
 #define PULSE_PER_REV 1000  //us
 
@@ -50,8 +50,6 @@ void updatePulseDir();
 
 void initStepperControl()
 {
-
-
     pinMode(pulPin,OUTPUT);
     pinMode(dirPin,OUTPUT);
 
