@@ -8,17 +8,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-//=====[Libraries]=============================================================
-
 #include <Arduino.h>
 #include "button.h"
+#include "stepper.h"
 #include "direction_commands.h"
+#include "engaged_light.h"
+#include <fstream> //for read_file
+#include <iostream> //for read_file
+#include <sstream> //for read_file
+using namespace std; //for read_file
 
 //=====[Declaration of private defines]========================================
 
 //=====[Declaration of private data types]=====================================
 
 //=====[Declaration and initialization of public global objects]===============
+
+//maximum number of rows for the 2D array
+const int MAX_ROWS = 100; //change to # of rows desired from CSV file
+
+//maximum number of columns for the 2D array
+const int MAX_COLS = 2; 
 
 //=====[Declaration of external public global variables]=======================
 
@@ -34,8 +44,31 @@ void commandsOnDisengage();
 
 //=====[Implementations of public functions]===================================
 
-void initDirectionCommands() {
-    Serial.begin(9600);
+void read_file(){ //this reads the CSV file and stores the data in a 2D array
+    //file pointer
+    fstream fin;
+
+    //open an existing file
+    fin.open("file.csv", std::ios::in); //insert file name here. used for only reading file, not writing in it
+
+    //define a 2D array to store the CSV data
+    string data[MAX_ROWS][MAX_COLS];
+    string line;
+    int row = 0;
+
+    //Store the CSV data from the CSV file to the 2D array
+    while (getline(file, line) && row < MAX_ROWS) {
+        stringstream ss(line);
+        string cell;
+        int col = 0;
+        while (getline(ss, cell, ',') && col < MAX_COLS) {
+            data[row][col] = cell;
+            col++;
+        }
+        row++;
+    }
+    //close the file after read operation is complete
+    fin.close();
 }
 
 
@@ -54,10 +87,12 @@ void updateDirectionCommands() {
 
 
 void commandsOnEngage() {
-    Serial.println("engaged");`
+    Serial.println("engaged");
     turnOnEngagedLight();
+    stepperRotationsWrite(1);
 }
 
 void commandsOnDisengage() {
     Serial.println("disengaged");
+    turnOffEngagedLight();
 }

@@ -22,7 +22,7 @@ SOFTWARE.
 void initStepperControl();
 void updateStepperControl();
 
-void stepperRotationsWrite(int rotations);
+void stepperRotationsWrite(float rotations);
 bool stepperReady();
 
 //=====[#include guards - end]=================================================

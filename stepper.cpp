@@ -65,7 +65,7 @@ void updateStepperControl(){
     updatePulseDir();
 }
 
-void stepperRotationsWrite(int rotations) {
+void stepperRotationsWrite(float rotations) {
     //times two because we measure on the rising and falling edge
     stepsLeft += rotations * PULSE_PER_REV*2;
 }
@@ -81,6 +81,8 @@ bool stepperReady(){
 
 // this function runs a Pulse step every period
 void stepperUpdateStep() {
+
+    //IF NEGATIVE THEN GO BACKWARDS 
 
     // will only run if time inc is correct and there are steps left
     if (pulseDelayTimeIncrement >= PERIOD/2 && stepsLeft >= 0) {
@@ -102,62 +104,3 @@ void updatePulseDir(){
         digitalWrite(pulPin,LOW);
     }
 }
-
-/*motorDirection_t motorDirectionRead()
-{
-    return motorDirection;
-}
-
-void motorDirectionWrite( motorDirection_t direction )
-{
-    motorDirection = direction;
-}
-
-void motorControlUpdate()
-{
-    static int motorUpdateCounter = 0;
-    
-    motorUpdateCounter++;
-    
-    if ( motorUpdateCounter > MOTOR_UPDATE_TIME ) {
-        
-        motorUpdateCounter = 0;
-        
-        switch ( motorState ) {
-            case DIRECTION_1:
-                if ( motorDirection == DIRECTION_2 || 
-                     motorDirection == STOPPED ) {
-                    motorM1Pin.input();
-                    motorM2Pin.input();
-                    motorState = STOPPED;
-                }
-            break;
-    
-            case DIRECTION_2:
-                if ( motorDirection == DIRECTION_1 || 
-                     motorDirection == STOPPED ) {
-                    motorM1Pin.input();
-                    motorM2Pin.input();
-                    motorState = STOPPED;
-                }
-            break;
-    
-            case STOPPED:
-            default:
-                if ( motorDirection == DIRECTION_1 ) {
-                    motorM2Pin.input();
-                    motorM1Pin.output();
-                    motorM1Pin = LOW;
-                    motorState = DIRECTION_1;
-                }
-                
-                if ( motorDirection == DIRECTION_2 ) {
-                    motorM1Pin.input();
-                    motorM2Pin.output();
-                    motorM2Pin = LOW;
-                    motorState = DIRECTION_2;
-                }
-            break;
-        }
-    }        
-}*/
