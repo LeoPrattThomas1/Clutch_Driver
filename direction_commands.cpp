@@ -31,6 +31,8 @@ const int MAX_ROWS = 100; //change to # of rows desired from CSV file
 //maximum number of columns for the 2D array
 const int MAX_COLS = 2; 
 
+directions direction;
+
 //=====[Declaration of external public global variables]=======================
 
 //=====[Declaration and initialization of public global variables]=============
@@ -50,7 +52,7 @@ void read_file(){ //this reads the CSV file and stores the data in a 2D array
     fstream fin;
 
     //open an existing file
-    fin.open("file.csv", std::ios::in); //insert file name here. used for only reading file, not writing in it
+    fin.open("Direction_Command_Files/engage.csv", std::ios::in); //insert file name here. used for only reading file, not writing in it
 
     //define a 2D array to store the CSV data
     string data[MAX_ROWS][MAX_COLS];
@@ -74,7 +76,7 @@ void read_file(){ //this reads the CSV file and stores the data in a 2D array
 */
 
 void initDirectionCommands(){
-  
+    direction = getDirection();
 }
 
 void updateDirectionCommands() {
@@ -90,18 +92,28 @@ void updateDirectionCommands() {
 
 //=====[Implementations of private functions]==================================
 
+void updateEngagedLight(){
+    if (isStepperReady()){
+        if (getDirection() == UP);
+            turnOnEngagedLight();
+        else{
+            turnOffEngagedLight();
+        }
+    }
+}
+
 
 void commandsOnEngage() {
     Serial.println();
     Serial.println("Engaged");
-    turnOnEngagedLight();
-    stepperRotationsWrite(3);
     
+    stepperRotationsWrite(3); 
+    updateEngagedLight();  
 }
 
 void commandsOnDisengage() {
     Serial.println();
     Serial.println("Disengaged");
-    turnOffEngagedLight();
     stepperRotationsWrite(-3);
+    updateEngagedLight();
 }
