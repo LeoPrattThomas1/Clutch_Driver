@@ -36,15 +36,15 @@ SOFTWARE.
 //=====[Implementations of public functions]===================================
 
 void initClutchDriverSystem(){
-    initButton();
-    initEngagedLight();
-    initDirectionCommands();
+  initButton();
+  initEngagedLight();
+  initDirectionCommands();
+  stepperEngage();
+  Serial.begin(9600);
 
-    //this funtion has a delay so the stepper can have time to enable on boot.
-    initStepperControl(); 
-
-    //start system with one rotation (testing purposes)
-    stepperRotationsWrite(1);
+  //this funtion has a delay so the stepper can have time to enable on boot.
+  initStepperControl(); 
+  
 }
 void updateClutchDriverSystem(){
 

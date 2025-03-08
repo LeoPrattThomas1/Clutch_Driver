@@ -15,15 +15,23 @@ SOFTWARE.
 
 //=====[Declaration of public defines]=========================================
 
+
 //=====[Declaration of public data types]======================================
+
+typedef enum { UP, DOWN } directions; 
 
 //=====[Declarations (prototypes) of public functions]=========================
 
 void initStepperControl();
 void updateStepperControl();
 
+
+//stepper commands
+
+void stepperEngage();//engage stepper driver 
+void stepperDisengage();//disengage stepper driver
+bool isStepperReady(); //ouputs if steper driver is done with commands
 void stepperRotationsWrite(float rotations);
-bool stepperReady();
 
 //=====[#include guards - end]=================================================
 

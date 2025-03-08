@@ -18,6 +18,7 @@ SOFTWARE.
 #include <sstream> //for read_file
 using namespace std; //for read_file
 
+
 //=====[Declaration of private defines]========================================
 
 //=====[Declaration of private data types]=====================================
@@ -43,7 +44,7 @@ void commandsOnEngage();
 void commandsOnDisengage();
 
 //=====[Implementations of public functions]===================================
-
+/*
 void read_file(){ //this reads the CSV file and stores the data in a 2D array
     //file pointer
     fstream fin;
@@ -70,7 +71,11 @@ void read_file(){ //this reads the CSV file and stores the data in a 2D array
     //close the file after read operation is complete
     fin.close();
 }
+*/
 
+void initDirectionCommands(){
+  
+}
 
 void updateDirectionCommands() {
     if ( buttonFalling() ) {
@@ -87,12 +92,16 @@ void updateDirectionCommands() {
 
 
 void commandsOnEngage() {
-    Serial.println("engaged");
+    Serial.println();
+    Serial.println("Engaged");
     turnOnEngagedLight();
-    stepperRotationsWrite(1);
+    stepperRotationsWrite(3);
+    
 }
 
 void commandsOnDisengage() {
-    Serial.println("disengaged");
+    Serial.println();
+    Serial.println("Disengaged");
     turnOffEngagedLight();
+    stepperRotationsWrite(-3);
 }

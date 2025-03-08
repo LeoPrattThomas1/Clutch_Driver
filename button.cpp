@@ -44,6 +44,7 @@ bool lastButtonState;
 
 void debounceButtonUpdate(); 
 void debounceButtonInit();
+void updateEnterButton();
 
 
 //=====[Implementations of public functions]===================================
@@ -53,13 +54,14 @@ void initButton() {
 
 
     // setup debounce
-    enterButton = digitalRead(buttonPin);
+    updateEnterButton();
     debounceButtonInit();
 }
 
 void updateButton() {
-    enterButton = digitalRead(buttonPin);
-    
+
+
+    updateEnterButton();
     debounceButtonUpdate(); 
 
     // Serial.println(enterButtonState);
@@ -72,6 +74,7 @@ void updateButton() {
     }
 }
 
+//gives the state of the button debounced
 bool readButton(){
     if (enterButtonState == BUTTON_UP){
       return true;
@@ -82,15 +85,27 @@ bool readButton(){
     }
 }
 
+//is only true when the button is done falling
 bool buttonFalling(){
     return isButtonFalling; 
 }
 
+//is only true when the button is rising
 bool buttonRising(){
     return isButtonRising; 
 }
 
 //=====[Implementations of private functions]==================================
+
+//updates enterbutton into a boolean varible
+void updateEnterButton(){
+  int button = digitalRead(buttonPin);
+  if (button == 1){
+    enterButton = true;
+  } else {
+    enterButton = false;
+  }
+}
 
 void debounceButtonInit(){ 
     if( enterButton ) {
@@ -106,14 +121,14 @@ void debounceButtonUpdate() {
 
     switch( enterButtonState ) {
         case BUTTON_UP:
-            if( enterButton ) {
+            if( !enterButton ) {
                 enterButtonState = BUTTON_FALLING;            
                 accumulatedDebounceButtonTime = 0;        
             }         
             break;    
         case BUTTON_FALLING:
             if( accumulatedDebounceButtonTime >= DEBOUNCE_BUTTON_TIME_MS * 1000 ) {}
-                if( enterButton ) { 
+                if( !enterButton ) { 
                     isButtonFalling = true;
                     enterButtonState = BUTTON_DOWN;
                 } else {
@@ -122,24 +137,25 @@ void debounceButtonUpdate() {
             accumulatedDebounceButtonTime = accumulatedDebounceButtonTime + SYSTEM_TIME_INCREMENT_US;
             break;
         case BUTTON_DOWN: 
-            if( !enterButton ) {
+            if( enterButton ) {
                 enterButtonState = BUTTON_RISING; 
                 accumulatedDebounceButtonTime = 0; 
             }  
             break;
         case BUTTON_RISING: 
             if( accumulatedDebounceButtonTime >= DEBOUNCE_BUTTON_TIME_MS * 1000 ) {
-                if( !enterButton ) {
+                if( enterButton ) {
                     enterButtonState = BUTTON_UP;
                     isButtonRising = true;
-                } 
-            } else {
-                enterButtonState = BUTTON_DOWN;
+                } else {
+                 enterButtonState = BUTTON_DOWN;
+                }
             }
             accumulatedDebounceButtonTime = accumulatedDebounceButtonTime + SYSTEM_TIME_INCREMENT_US; 
             break;
         default:
             debounceButtonInit(); 
+            Serial.println("FAIL ON DEBOUNCE");
             break;
     } 
 }
