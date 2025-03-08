@@ -20,6 +20,16 @@ SOFTWARE.
 
 //=====[Declaration and initialization of public global objects]===============
 
+<<<<<<< Updated upstream
+=======
+//maximum number of rows for the 2D array
+const int MAX_ROWS = 100; //change to # of rows desired from CSV file
+
+//maximum number of columns for the 2D array
+const int MAX_COLS = 2; 
+
+
+>>>>>>> Stashed changes
 //=====[Declaration of external public global variables]=======================
 
 //=====[Declaration and initialization of public global variables]=============
@@ -36,6 +46,35 @@ void commandsOnDisengage();
 
 void initDirectionCommands() {
     Serial.begin(9600);
+}
+
+
+void read_file(){ //this reads the CSV file and stores the data in a 2D array
+    //file pointer
+    fstream fin;
+
+    //open an existing file
+    ifstream file("data.csv");
+
+    //define a 2D array to store the CSV data
+    string data[MAX_ROWS][MAX_COLS];
+    string line;
+    int row = 0;
+
+    //Store the CSV data from the CSV file to the 2D array
+    while (getline(fin, line) && row < MAX_ROWS) {
+        stringstream ss(line);
+        string cell;
+        int col = 0;
+
+        while (getline(ss, cell, ',') && col < MAX_COLS) {
+            data[row][col] = cell;
+            col++;
+        }
+        row++;
+    }
+    //close the file after read operation is complete
+    fin.close();
 }
 
 
