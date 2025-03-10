@@ -11,12 +11,8 @@ SOFTWARE.
 /*
 TODO (on hold due to board malfunction)
 
-Serial.end();: 
-  program if the step is backwards reverse direction of the motor
-
 Direction Commands:
-  implement servo code to direction commands
-  make it programible with file (mabey?)
+  make it programble with file (maby?)
 
 Engaged Light: 
   make lights 3 state system

@@ -12,9 +12,13 @@ SOFTWARE.
 
 #include "engaged_light.h"
 #include "button.h"
+#include "stepper.h"
+#include "clutch_driver_system.h"
 #include <Arduino.h>
 
 //=====[Declaration of private defines]========================================
+
+#define LED_PULSE_TIME_US 100000
 
 //=====[Declaration of private data types]=====================================
 
@@ -26,10 +30,16 @@ SOFTWARE.
 
 //=====[Declaration and initialization of private global variables]============
 
+lightStates lightState = OFF;
+int lightPin = 7;
+int lightTimeInc = 0;
+bool lightStateLogic = false;
+
+
 //=====[Declarations (prototypes) of private functions]========================
 
-bool lightState = false;
-int lightPin = 7;
+void updateLightState();
+void loadEngagedLight();
 
 //=====[Implementations of public functions]===================================
 
@@ -39,16 +49,53 @@ void initEngagedLight() {
     digitalWrite(lightPin, LOW);
 }
 
+
 void updateEngagedLight() {
+    lightTimeInc = lightTimeInc + SYSTEM_TIME_INCREMENT_US;
+    updateLightState();
+    loadEngagedLight();
 }
 
+
+//set light engaged steps
 void turnOnEngagedLight() {
-    lightState = true;
+    lightState = ON;
     digitalWrite(lightPin, HIGH);
 }
 
 void turnOffEngagedLight() {
-    lightState = false;
+    lightState = OFF;
     digitalWrite(lightPin, LOW);
 }
+
+void raiseLightError() {
+    lightState = ERROR;
+    digitalWrite(lightPin, LOW);
+    lightStateLogic = false;
+}
+
+
+
 //=====[Implementations of private functions]==================================
+
+void loadEngagedLight(){
+    if (isStepperReady()){
+        if (getDirection() == UP){
+            turnOnEngagedLight();
+        
+        } else if (getDirection() == DOWN){
+            turnOffEngagedLight();
+        
+        }
+    }
+}
+
+void updateLightState(){
+    if (lightState == ERROR && lightTimeInc >= LED_PULSE_TIME_US){
+        lightStateLogic = !lightStateLogic;
+        
+        if (lightStateLogic) { digitalWrite(lightPin, HIGH); }
+        else { digitalWrite(lightPin, HIGH); }
+
+    }
+}

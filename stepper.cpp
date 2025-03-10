@@ -10,9 +10,12 @@ SOFTWARE.
 
 //=====[Libraries]=============================================================
 
+#include <Arduino.h>
+#include "engaged_light.h"
 #include "stepper.h"
 #include "clutch_driver_system.h"
-#include <Arduino.h>
+
+
 
 //=====[Declaration of private defines]========================================
 
@@ -92,7 +95,7 @@ void updateStepperControl(){
     stepperUpdateStep();
     updatePulseDir();
 
-    if (stepsLeft <= 0 and timeSinceEnable > ENABLE_WT_TIME){
+    if (stepsLeft <= 0 && timeSinceEnable > ENABLE_WT_TIME){
       isDone = true;
     }
 }
@@ -112,6 +115,7 @@ void stepperRotationsWrite(float rotations) {
       Serial.println("DOWN");
     }
   } else {
+    raiseLightError();
     Serial.println("Error: Sent instruction while Stepper is running");
   }
   
@@ -140,6 +144,11 @@ bool isStepperReady(){
 }
 
 
+directions getDirection(){
+  return direction;
+}
+
+
 //=====[Implementations of private functions]==================================
 
 
@@ -155,7 +164,6 @@ void stepperUpdateStep() {
       //to switch direction skip one pulse to change directions.
       if (direction != setDirection){
         direction = setDirection;
-        Serial.println("NEW DIRECTION!");
         updateDirection();
 
       // if direction is the same flip pulse of system, to make PWM
@@ -181,10 +189,10 @@ void updatePulseDir(){
 //update direction based off of instructions
 void updateDirection(){
   if (direction == UP) {
-    Serial.println("UP");
-    digitalWrite(dirPin,LOW);
+      digitalWrite(dirPin,LOW);
+  } else if (direction == DOWN) {
+      digitalWrite(dirPin,HIGH);
   } else {
-    Serial.println("DOWN");
-    digitalWrite(dirPin,HIGH);
+      Serial.println("DirectionUpdateFailed");
   }
 }
