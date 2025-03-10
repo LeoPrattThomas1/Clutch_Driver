@@ -17,12 +17,15 @@ SOFTWARE.
 
 //=====[Declaration of public data types]======================================
 
+typedef enum { ON, OFF, ERROR } lightStates; 
+
 //=====[Declarations (prototypes) of public functions]=========================
 
 void initEngagedLight();
 void updateEngagedLight();
 void turnOnEngagedLight();
 void turnOffEngagedLight();
+void raiseLightError();
 
 
 //=====[#include guards - end]=================================================

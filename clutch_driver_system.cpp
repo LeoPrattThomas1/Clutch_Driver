@@ -16,6 +16,7 @@ SOFTWARE.
 #include "direction_commands.h"
 #include "engaged_light.h"
 #include "stepper.h"
+#include "RPM.h"
 #include <Arduino.h>
 
 
@@ -40,17 +41,20 @@ void initClutchDriverSystem(){
   initEngagedLight();
   initDirectionCommands();
   stepperEngage();
+  initRPM();
   Serial.begin(9600);
 
   //this funtion has a delay so the stepper can have time to enable on boot.
   initStepperControl(); 
-  
 }
+
 void updateClutchDriverSystem(){
 
   //main  control systems
   updateStepperControl();
   updateButton();
+
+  updateRPM();
 
   //run these commands after button and stepper are updated
   updateDirectionCommands();

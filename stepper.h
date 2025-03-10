@@ -33,6 +33,8 @@ void stepperDisengage();//disengage stepper driver
 bool isStepperReady(); //ouputs if steper driver is done with commands
 void stepperRotationsWrite(float rotations);
 
+directions getDirection();
+
 //=====[#include guards - end]=================================================
 
 #endif

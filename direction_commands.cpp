@@ -13,10 +13,10 @@ SOFTWARE.
 #include "stepper.h"
 #include "direction_commands.h"
 #include "engaged_light.h"
-#include <fstream> //for read_file
-#include <iostream> //for read_file
-#include <sstream> //for read_file
-using namespace std; //for read_file
+
+// #include <fstream> //for read_file
+// #include <iostream> //for read_file
+// #include <sstream> //for read_file
 
 
 //=====[Declaration of private defines]========================================
@@ -25,18 +25,16 @@ using namespace std; //for read_file
 
 //=====[Declaration and initialization of public global objects]===============
 
+//=====[Declaration and initialization of private global variables]============
+
 //maximum number of rows for the 2D array
 const int MAX_ROWS = 100; //change to # of rows desired from CSV file
 
 //maximum number of columns for the 2D array
 const int MAX_COLS = 2; 
 
-//=====[Declaration of external public global variables]=======================
-
-//=====[Declaration and initialization of public global variables]=============
-
-
-//=====[Declaration and initialization of private global variables]============
+directions curDirection;
+ 
 
 //=====[Declarations (prototypes) of private functions]========================
 
@@ -50,7 +48,7 @@ void read_file(){ //this reads the CSV file and stores the data in a 2D array
     fstream fin;
 
     //open an existing file
-    fin.open("file.csv", std::ios::in); //insert file name here. used for only reading file, not writing in it
+    fin.open("Direction_Command_Files/engage.csv", std::ios::in); //insert file name here. used for only reading file, not writing in it
 
     //define a 2D array to store the CSV data
     string data[MAX_ROWS][MAX_COLS];
@@ -74,15 +72,16 @@ void read_file(){ //this reads the CSV file and stores the data in a 2D array
 */
 
 void initDirectionCommands(){
-  
 }
 
 void updateDirectionCommands() {
-    if ( buttonFalling() ) {
+    curDirection = getDirection();
+
+    if ( buttonFalling() && isStepperReady() && (curDirection == DOWN)) {
         commandsOnEngage();
     }
 
-    if ( buttonRising() ) {
+    if ( buttonRising() && isStepperReady() && (curDirection == UP)) {
         commandsOnDisengage();
     }
 }
@@ -91,17 +90,19 @@ void updateDirectionCommands() {
 //=====[Implementations of private functions]==================================
 
 
-void commandsOnEngage() {
+
+
+
+//these are the commands that run on the event trigger engage 
+void commandsOnEngage() {    
     Serial.println();
     Serial.println("Engaged");
-    turnOnEngagedLight();
-    stepperRotationsWrite(3);
-    
+    stepperRotationsWrite(3); 
 }
 
+//these are the commands that run on the event trigger disengadge 
 void commandsOnDisengage() {
     Serial.println();
     Serial.println("Disengaged");
-    turnOffEngagedLight();
-    stepperRotationsWrite(-3);
+    stepperRotationsWrite(-3); 
 }
