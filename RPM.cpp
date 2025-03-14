@@ -28,8 +28,7 @@ void updateRPMState();
 void initRPM() {
     pinMode(RPM_PIN,INPUT);
 }
-
-
+  
 void updateRPM() {
     updateRPMState();
 }
@@ -40,10 +39,6 @@ bool readRPM(){
 
 //=====[Implementations of private functions]==================================
 
-
-
-
-
 void updateRPMState(){
     int button = digitalRead(RPM_PIN);
     if (button == 1){
@@ -52,3 +47,4 @@ void updateRPMState(){
         isRPMLow = false;
     }
   }
+}
