@@ -1,6 +1,4 @@
 {
-    "configuration": "PartitionScheme=default,PinNumbers=default,USBMode=default",
     "board": "esp32:esp32:nano_nora",
-    "sketch": "Clutch_Driver.ino",
     "port": "/dev/tty.usbmodem744DBDA0F1D42"
 }

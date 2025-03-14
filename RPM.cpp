@@ -46,5 +46,4 @@ void updateRPMState(){
     } else {
         isRPMLow = false;
     }
-  }
 }
