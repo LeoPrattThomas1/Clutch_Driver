@@ -11,6 +11,7 @@ SOFTWARE.
 #include <Arduino.h>
 #include "button.h"
 #include "stepper.h"
+#include "RPM.h"
 #include "direction_commands.h"
 #include "engaged_light.h"
 
@@ -34,7 +35,7 @@ const int MAX_ROWS = 100; //change to # of rows desired from CSV file
 const int MAX_COLS = 2; 
 
 directions curDirection;
- 
+bool isRPMBad; 
 
 //=====[Declarations (prototypes) of private functions]========================
 
@@ -76,12 +77,13 @@ void initDirectionCommands(){
 
 void updateDirectionCommands() {
     curDirection = getDirection();
+    isRPMBad = readRPM(); //true is bad
 
-    if ( buttonFalling() && isStepperReady() && (curDirection == DOWN)) {
+    if ( buttonFalling() && isStepperReady() && (curDirection == DOWN) && !isRPMBad) {
         commandsOnEngage();
     }
 
-    if ( buttonRising() && isStepperReady() && (curDirection == UP)) {
+    if ( buttonRising() && isStepperReady() && (curDirection == UP) && !isRPMBad) {
         commandsOnDisengage();
     }
 }
@@ -97,12 +99,12 @@ void updateDirectionCommands() {
 void commandsOnEngage() {    
     Serial.println();
     Serial.println("Engaged");
-    stepperRotationsWrite(3); 
+    stepperRotationsWrite(1.094); 
 }
 
 //these are the commands that run on the event trigger disengadge 
 void commandsOnDisengage() {
     Serial.println();
     Serial.println("Disengaged");
-    stepperRotationsWrite(-3); 
+    stepperRotationsWrite(-1.094); 
 }
