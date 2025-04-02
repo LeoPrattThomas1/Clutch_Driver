@@ -16,7 +16,8 @@ SOFTWARE.
 
 //=====[Declaration of private defines]========================================
 
-#define DEBOUNCE_BUTTON_TIME_MS   40//40ms
+#define DEBOUNCE_RISE_BUTTON_TIME_MS   500
+#define DEBOUNCE_FALL_BUTTON_TIME_MS   500
 
 //=====[Declaration of private data types]=====================================
 
@@ -66,7 +67,7 @@ void updateButton() {
 
     // Serial.println(enterButtonState);
 
-    //funtion at end of code
+    //function at end of code
     if (enterButtonState == BUTTON_UP){
       lastButtonState = true;
     } else if (enterButtonState == BUTTON_DOWN) {
@@ -97,7 +98,7 @@ bool buttonRising(){
 
 //=====[Implementations of private functions]==================================
 
-//updates enterbutton into a boolean varible
+//updates enter-button into a boolean variable
 void updateEnterButton(){
   int button = digitalRead(buttonPin);
   if (button == 1){
@@ -125,25 +126,30 @@ void debounceButtonUpdate() {
                 enterButtonState = BUTTON_FALLING;            
                 accumulatedDebounceButtonTime = 0;        
             }         
-            break;    
+            break;  
+
         case BUTTON_FALLING:
-            if( accumulatedDebounceButtonTime >= DEBOUNCE_BUTTON_TIME_MS * 1000 ) {}
+            if( accumulatedDebounceButtonTime >= DEBOUNCE_RISE_BUTTON_TIME_MS * 1000 ) {
                 if( !enterButton ) { 
                     isButtonFalling = true;
                     enterButtonState = BUTTON_DOWN;
                 } else {
                     enterButtonState = BUTTON_UP;
                 }
+            }
             accumulatedDebounceButtonTime = accumulatedDebounceButtonTime + SYSTEM_TIME_INCREMENT_US;
             break;
+
         case BUTTON_DOWN: 
             if( enterButton ) {
                 enterButtonState = BUTTON_RISING; 
                 accumulatedDebounceButtonTime = 0; 
             }  
             break;
+
+
         case BUTTON_RISING: 
-            if( accumulatedDebounceButtonTime >= DEBOUNCE_BUTTON_TIME_MS * 1000 ) {
+            if( accumulatedDebounceButtonTime >= DEBOUNCE_FALL_BUTTON_TIME_MS * 1000 ) {
                 if( enterButton ) {
                     enterButtonState = BUTTON_UP;
                     isButtonRising = true;

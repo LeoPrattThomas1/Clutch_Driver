@@ -32,6 +32,7 @@ SOFTWARE.
 
 lightStates lightState = OFF;
 int lightPin = 7;
+int lightPin2 = 2;
 int lightTimeInc = 0;
 bool lightStateLogic = false;
 
@@ -40,13 +41,16 @@ bool lightStateLogic = false;
 
 void updateLightState();
 void loadEngagedLight();
+void turnLightOn();
+void turnLightOff();
 
 //=====[Implementations of public functions]===================================
 
 void initEngagedLight() {
     pinMode(lightPin,OUTPUT);
+    pinMode(lightPin2,OUTPUT);
 
-    digitalWrite(lightPin, LOW);
+    turnLightOff();
 }
 
 
@@ -60,17 +64,17 @@ void updateEngagedLight() {
 //set light engaged steps
 void turnOnEngagedLight() {
     lightState = ON;
-    digitalWrite(lightPin, HIGH);
+    turnLightOn();
 }
 
 void turnOffEngagedLight() {
     lightState = OFF;
-    digitalWrite(lightPin, LOW);
+    turnLightOff();
 }
 
 void raiseLightError() {
     lightState = ERROR;
-    digitalWrite(lightPin, LOW);
+    turnLightOff();
     lightStateLogic = false;
 }
 
@@ -90,12 +94,22 @@ void loadEngagedLight(){
     }
 }
 
+void turnLightOn(){
+    digitalWrite(lightPin, HIGH);
+    digitalWrite(lightPin2, HIGH);
+}
+void turnLightOff(){
+    digitalWrite(lightPin, LOW);
+    digitalWrite(lightPin2, LOW);
+}
+
+
 void updateLightState(){
     if (lightState == ERROR && lightTimeInc >= LED_PULSE_TIME_US){
         lightStateLogic = !lightStateLogic;
         
-        if (lightStateLogic) { digitalWrite(lightPin, HIGH); }
-        else { digitalWrite(lightPin, HIGH); }
+        if (lightStateLogic) { turnLightOn(); }
+        else { turnLightOff(); }
 
     }
 }

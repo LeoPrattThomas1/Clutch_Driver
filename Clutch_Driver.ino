@@ -23,6 +23,9 @@ Engaged Light:
 
 implement error Module *or have it in engaged light*
   get error codes from RPM, and error codes from stepper,
+
+create manual overide for eengadge and disengadge
+
 */
 
 

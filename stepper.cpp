@@ -19,11 +19,12 @@ SOFTWARE.
 
 //=====[Declaration of private defines]========================================
 
-#define ENABLE_WT_TIME 200000  //us
+#define ENABLE_WT_TIME 500000  //us
 #define DIR_FLIP_WT_TIME 10 //us 
 #define STARTUP_TIME 200    //ms
-#define PERIOD 170          //us
+#define PERIOD 120          //us
 #define PULSE_PER_REV 1000  //us
+
 
 
 
@@ -77,7 +78,7 @@ void initStepperControl()
     digitalWrite(enaPin,LOW);
     updateDirection();
 
-    delay(STARTUP_TIME); //fix this later
+    delayMicroseconds(ENABLE_WT_TIME); //fix this later
 }
 
 

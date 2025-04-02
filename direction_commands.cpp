@@ -15,12 +15,14 @@ SOFTWARE.
 #include "direction_commands.h"
 #include "engaged_light.h"
 
+
 // #include <fstream> //for read_file
 // #include <iostream> //for read_file
 // #include <sstream> //for read_file
 
 
 //=====[Declaration of private defines]========================================
+
 
 //=====[Declaration of private data types]=====================================
 
@@ -79,11 +81,11 @@ void updateDirectionCommands() {
     curDirection = getDirection();
     isRPMBad = readRPM(); //true is bad
 
-    if ( buttonFalling() && isStepperReady() && (curDirection == DOWN) && !isRPMBad) {
-        commandsOnEngage();
+    if ( buttonRising() && isStepperReady() && (curDirection == UP) && !isRPMBad) {
+        commandsOnEngage(); 
     }
 
-    if ( buttonRising() && isStepperReady() && (curDirection == UP) && !isRPMBad) {
+    if ( buttonFalling() && isStepperReady() && (curDirection == DOWN) && !isRPMBad) {
         commandsOnDisengage();
     }
 }
@@ -99,12 +101,12 @@ void updateDirectionCommands() {
 void commandsOnEngage() {    
     Serial.println();
     Serial.println("Engaged");
-    stepperRotationsWrite(1.094); 
+    stepperRotationsWrite(-1.4); 
 }
 
 //these are the commands that run on the event trigger disengadge 
 void commandsOnDisengage() {
     Serial.println();
     Serial.println("Disengaged");
-    stepperRotationsWrite(-1.094); 
+    stepperRotationsWrite(1.092); 
 }

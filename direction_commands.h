@@ -15,6 +15,8 @@ SOFTWARE.
 
 //=====[Declaration of public defines]=========================================
 
+#define ROTs_FOR_ENGAGE 1.092
+
 //=====[Declaration of public data types]======================================
 
 //=====[Declarations (prototypes) of public functions]=========================

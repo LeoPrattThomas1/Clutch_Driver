@@ -46,9 +46,15 @@ void initClutchDriverSystem(){
 
   //this funtion has a delay so the stepper can have time to enable on boot.
   initStepperControl(); 
+
+  
+  stepperRotationsWrite(-2.5);
+
+
+  //stepperRotationsWrite(-ROTs_FOR_ENGAGE*2);
 }
 
-void updateClutchDriverSystem(){
+
 
   //main  control systems
   updateStepperControl();
